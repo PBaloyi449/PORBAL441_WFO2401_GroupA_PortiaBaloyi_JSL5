@@ -33,15 +33,17 @@ document.addEventListener("DOMContentLoaded", function() {
     // Function to generate playlist based on preferred genre
     function generatePlaylist(guardians, songs) {
         // Use the map() function to create playlists for each Guardian
-        const playlists = {};
-
-        for (const guardian in guardians) {
-            const preferredGenre = guardians[guardian];
-            playlists[guardian] = songs.filter(song => song.genre === preferredGenre);
-        }
-
-        return playlists;
+         return Object.fromEntries(
+            Object.entries(guardians).map(([guardian, genre]) => {
+            // Filter songs based on the guardian's preferred genre
+            const playlist = songs.filter(song => song.genre === genre);
+            // Return an array with the guardian's name as the key
+            // and their playlist as the value
+            return [guardian, playlist];
+            })
+        );
     }
+
 
     // Call generatePlaylist and display the playlists for each Guardian
     const playlists = generatePlaylist(guardians, songs);
